@@ -3,6 +3,11 @@ project(RaceEstimator)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/touchgfx)
+  message( FATAL_ERROR "touchgfx framework is missing, please place the framework in "${CMAKE_CURRENT_SOURCE_DIR}/touchgfx )
+endif()
+
+
 set(GENERATED_SOURCE_FILES
         generated/fonts/src/ApplicationFontProvider.cpp
         generated/images/src/BitmapDatabase.cpp
@@ -32,7 +37,10 @@ set(GUI_HEADER_FILES
         gui/include/gui/common/FrontendApplication.hpp
         )
 
-set(SOURCE_FILES main.cpp
+set(SOURCE_FILES main.cpp)
+
+
+set(SIMULATOR_SOURCE_FILES
         touchgfx/framework/source/platform/hal/simulator/sdl2/HALSDL2.cpp
         touchgfx/framework/source/platform/hal/simulator/sdl2/HALSDL2_icon.cpp
         touchgfx/framework/source/platform/hal/simulator/sdl2/OSWrappers.cpp
@@ -60,7 +68,7 @@ add_custom_target(
 )
 
 
-add_executable(RaceEstimator ${SOURCE_FILES} ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES} ${GENERATED_HEADER_FILES} ${GENERATED_SOURCE_FILES})
+add_executable(RaceEstimator ${SOURCE_FILES} ${SIMULATOR_SOURCE_FILES} ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES} ${GENERATED_HEADER_FILES} ${GENERATED_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} touchgfx SDL2 SDL2_image rt m pthread dl)
 
 add_dependencies(${PROJECT_NAME} BuildAssets)
