@@ -4,7 +4,7 @@ project(RaceEstimator)
 set(CMAKE_CXX_STANDARD 17)
 
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/touchgfx)
-  message( FATAL_ERROR "touchgfx framework is missing, please place the framework in "${CMAKE_CURRENT_SOURCE_DIR}/touchgfx )
+    message( FATAL_ERROR "touchgfx framework is missing, please place the framework in " ${CMAKE_CURRENT_SOURCE_DIR}/touchgfx)
 endif()
 
 
@@ -47,6 +47,11 @@ set(SIMULATOR_SOURCE_FILES
         touchgfx/framework/source/platform/driver/touch/SDL2TouchController.cpp
         )
 
+file(GLOB SIMULATOR_HEADER_FILES
+        touchgfx/framework/include/touchgfx/**/*.hpp
+        touchgfx/framework/include/touchgfx/*.hpp
+        )
+
 
 add_definitions(-DSIMULATOR)
 include_directories(touchgfx/framework/include)
@@ -68,7 +73,7 @@ add_custom_target(
 )
 
 
-add_executable(RaceEstimator ${SOURCE_FILES} ${SIMULATOR_SOURCE_FILES} ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES} ${GENERATED_HEADER_FILES} ${GENERATED_SOURCE_FILES})
+add_executable(RaceEstimator ${SOURCE_FILES} ${SIMULATOR_SOURCE_FILES} ${SIMULATOR_HEADER_FILES} ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES} ${GENERATED_HEADER_FILES} ${GENERATED_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} touchgfx SDL2 SDL2_image rt m pthread dl)
 
 add_dependencies(${PROJECT_NAME} BuildAssets)
